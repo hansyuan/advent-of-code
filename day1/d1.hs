@@ -1,24 +1,19 @@
 import Data.Typeable 
 import System.IO
 
+-- Haskell lesson 1: You can't bring impurity into purity. 
+    
+    -- But you can bring purity into impurity, so do functions within the IO.
+
+
 main = do 
     contents <- readFile "input.txt" 
 
-    -- let splitNewlines = lines contents 
-    -- let intList = map read splitNewlines
     let 
         repl '\n' = ','; 
+        repl '+' = ' '
         repl c = c in
-        print $ map repl $ "[" ++ contents ++ "]"
+        let strListInts =  map repl $ "[" ++ (init contents) ++ "]" in do
+            print strListInts 
+            print $ (read :: String -> [Int]) strListInts 
 
-    -- print $ map (read :: String -> Int) (lines contents) 
-
-    -- print intList
-
-    -- let 
-    --     repl '\n' = ' ';
-    --     repl c = c in
-    --     map repl rawData
-
-    -- putStrLn (typeOf rawData)
-    -- putStrLn (map read $ words rawData :: [Int])
