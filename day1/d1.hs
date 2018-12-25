@@ -15,12 +15,20 @@ import System.IO
 
 -- Go through the list infinitely until a sum is found
 -- Currently Inefficient, but finds the right answer.
+
 findRepeat :: Int -> [Int] -> [Int] -> [Int] -> Int
 findRepeat sum seen deltas backup = do
+    -- Found case
     if (elem sum seen) then sum 
+
+    -- Need to repopulate the deltas 
     else if deltas == [] then findRepeat (sum) (seen) (backup) (backup)
-    else if backup == [] then -99998888
+
+    -- Iterative Case
     else findRepeat (sum + head deltas) (seen ++ [sum]) (tail deltas) (backup)
+
+
+-- Maybe I should right a version of the above code where it iterates through the list instead 
 
 main :: IO ()
 main =  do
