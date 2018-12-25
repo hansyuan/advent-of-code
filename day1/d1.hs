@@ -1,4 +1,4 @@
-import Data.Typeable 
+-- import Data.Typeable 
 import System.IO
 
 -- Haskell lesson 1: You can't bring impurity into purity. 
@@ -9,11 +9,21 @@ import System.IO
 main = do 
     contents <- readFile "input.txt" 
 
+    -- Naive solution
+
+    -- let 
+    --     repl '\n' = ','; 
+    --     repl '+' = ' '
+    --     repl c = c in
+    --     let strListInts =  map repl $ "[" ++ (init contents) ++ "]" in do
+    --         print strListInts 
+    --         print $ sum $ (read :: String -> [Int]) strListInts 
+
+
+    -- Attempt at optimizing 
+    
     let 
-        repl '\n' = ','; 
-        repl '+' = ' '
-        repl c = c in
-        let strListInts =  map repl $ "[" ++ (init contents) ++ "]" in do
-            print strListInts 
-            print $ (read :: String -> [Int]) strListInts 
+        repl '+' = ' ' 
+        repl c = c in 
+        print $ sum $ map (read :: String -> Int) (lines (map repl contents)) 
 
