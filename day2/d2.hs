@@ -21,6 +21,7 @@ distance str1 str2 count =
         else distance (tail str1) (tail str2) count
 
 
+measure :: [String] -> [String] -> IO()
 measure d1 [] = measure (tail d1) (tail d1)
 measure [] d2 = print "None found"
 measure d1 d2 = 
@@ -31,6 +32,7 @@ measure d1 d2 =
         else measure d1 (tail d2)
 
 
+main :: IO()
 main = do 
     -- Get list of strings 
     contents <- readFile "input.txt"
