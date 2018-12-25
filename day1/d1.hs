@@ -1,4 +1,4 @@
--- import Data.Typeable 
+import Data.Typeable 
 import System.IO
 
 -- Haskell lesson 1: You can't bring impurity into purity. 
@@ -6,24 +6,27 @@ import System.IO
     -- But you can bring purity into impurity, so do functions within the IO.
 
 
-main = do 
+-- Haskell doesn't necessarily have a deep copy?
+-- copyList :: [Int] -> [Int] -> [Int]
+-- copyList listSoFar listToCopy =  
+--     if listToCopy == []
+--         then listSoFar
+--         else copyList (listSoFar ++ [head listToCopy]) (tail listToCopy)
+
+-- Go through the list infinitely until a sum is found
+-- Currently Inefficient, but finds the right answer.
+findRepeat :: Int -> [Int] -> [Int] -> [Int] -> Int
+findRepeat sum seen deltas backup = do
+    if (elem sum seen) then sum 
+    else if deltas == [] then findRepeat (sum) (seen) (backup) (backup)
+    else if backup == [] then -99998888
+    else findRepeat (sum + head deltas) (seen ++ [sum]) (tail deltas) (backup)
+
+main :: IO ()
+main =  do
     contents <- readFile "input.txt" 
 
-    -- Naive solution
-
-    -- let 
-    --     repl '\n' = ','; 
-    --     repl '+' = ' '
-    --     repl c = c in
-    --     let strListInts =  map repl $ "[" ++ (init contents) ++ "]" in do
-    --         print strListInts 
-    --         print $ sum $ (read :: String -> [Int]) strListInts 
-
-
-    -- Attempt at optimizing 
-    
-    let 
-        repl '+' = ' ' 
-        repl c = c in 
-        print $ sum $ map (read :: String -> Int) (lines (map repl contents)) 
-
+    let repl '+' = ' ' ; repl c = c in 
+        let deltas = map (read :: String -> Int) $ lines (map repl contents) in 
+            -- print deltas
+            print $ findRepeat 0 [] ( deltas) (deltas)
