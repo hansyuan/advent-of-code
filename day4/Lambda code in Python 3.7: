@@ -1,0 +1,62 @@
+Actionable Requests: 
+
+	Code review appreciated: 
+		- https://code.corp.surveymonkey.com/hansy/cloud-formation-alerting/blob/master/MyRule.py 
+			- The lambda is in MyRule.py and only up to Line 118. Ran with Python 3.7.
+
+		-https://code.corp.surveymonkey.com/hansy/cloud-formation-alerting/blob/master/deploy-alerting.py 
+			- I'm using this script to upload the Lambda into an S3 bucket.
+			- Updating the template with the reference to the lambda.
+			- Deploying the CloudFormation.
+
+
+Components Needed:
+
+	- Either the PagerDuty API key or the SVMK Slack API key. 
+		- Slack would be preferable since PagerDuty is more oriented towards Incidents. 
+		- The problem with Slack was trying to get the SVMK API key for a Slackbot (or similar). 
+
+
+Info:
+
+	How do I know which AWS Resource Types to check against? 
+		- Cloudability Untagged Spending
+		- Arbitrarily Chosen:
+			- AWS::EC2::Instance
+			- AWS::EC2::Volume
+			- AWS::S3::Bucket,
+			- AWS::CloudTrail::Trail
+			- AWS::CloudFormation::Stack
+			- AWS::Redshift::Cluster
+			- AWS::EC2::VPC
+			- AWS::Lambda::Function
+			- AWS::EC2::VPNGateway
+
+	What can I match against? 
+		- Resource instances without the 'Name' tag.  
+
+	Can I generate a report on what is untagged? 
+		- AWS Config web UI. See Sandbox AWS Config for Oregon and Canada regions.
+		- Using the AWS CLI to get the AWS Config noncompliant resources as a JSON object and creating a custom report.
+
+	What am I waiting on? 
+		- I want to run this in C8 to to get a list of untagged resources. 
+		- Final period of comments up to Sun Jan 13. 
+
+	What have I tried to deploy in?
+		- Sandbox Oregon region has about 20 untagged resources. 
+		- Sandbox Canada region has about 150 untagged resources. 
+			- Majority of volumes are untagged and unattached
+		- Why is this number not really meaningful? See below.
+
+	What is the current use case? 
+		- Automated enforcement is currently impossible. 
+			- Looking at tags alone currently results in weird scenarios. We need to know how tagging can be bypassed and how tagged resources may still contain the same lack of info as untagged resources. Currently the lambda should be used for finding ad hoc ways that undesired resources/undesired state of resources exist in AWS.
+				- Example of undesired resource: unattached volumes with no tags
+				- Example of undesired state of resource: volume with no tags BUT it's attached to a tagged EC2 instance. (False Positive, might be something to edit into koala.)
+
+			- Future automated enforcement can be built on top of a finished version of the current lambda and after current tools tag resources in an expected way. 
+
+
+Next Deadline:
+	- Will starting look at untagged resources in C8 starting on Monday 
