@@ -1,14 +1,26 @@
 import Debug.Trace
+import Data.List
 
-f1 = "input"
-f2 = "small_input"
+f = "input"
+fs = "small_input"
 
 -- | Parse the file. Sort the entries. 
 main :: IO ()
 main = do
-  contents <- readFile f1
-  print $ map (split []) $ map (replaceUpTo []) $ lines contents
+  contents <- readFile f
+  let answer = show $ sort $ map (split []) $ map (replaceUpTo []) $ lines contents in
+    writeFile "./output" answer 
 
+
+-- | Part 2
+-- | Is every `fall asleep` followed by a `wake up` before a new guard goes on shift?
+
+-- | Data structure: a list of guards and his asleep times.
+-- | [(Int, [Int])] 
+
+-----------------------------------------------------------------------------------------
+
+-- | Part 1
 
 -- | Replace the delimiters for the timestamp only.
 replaceUpTo :: String -> String -> String
