@@ -17,6 +17,15 @@ main = do
     else writeFile "./orderedEvents" "Error."
   print $ "(Time Asleep, Guard ID): " ++ show (iterateGuards [] guardEvents)
 
+
+-----------------------------------------------------------------------------------------
+
+-- | Part 4: Determine which minute guard 727 slept the most.
+
+-- | fold:  deal with only guard 727's events, 
+-- | fold:    enumerate the minutes the guard was asleep as a list of minutes
+-- | fold:    get the mode of the minutes of the list 
+
 -----------------------------------------------------------------------------------------
 
 -- | Part 3: Determine which guard slept the most. 
