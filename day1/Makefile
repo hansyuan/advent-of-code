@@ -1,7 +1,7 @@
 # Build both the haskell and the C++
 all: d1.cpp 
 	ghc d1.hs
-	g++ d1.cpp 
+	g++ -std=c++11 d1.cpp 
 
 
 clean: 
