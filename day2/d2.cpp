@@ -40,19 +40,16 @@ unordered_map <char, int> countLetters (string inputString) {
 	unordered_map <char, int> letterCounts; 
 
 	for (char c: inputString) {
-		
 		auto keyPtr = letterCounts.find (c); 
 
 		// Insert letters not in dict
 		if (keyPtr == letterCounts.end ()){
 			letterCounts.insert ({c, 1});
-			// cout << "Insert: " << c << endl;
 		}
 
 		// Increment counts whose letters are already keys
 		else {
 			letterCounts[c]++;
-			// cout << "Incremented: " << c << ":: " << letterCounts[c] << endl;
 		}
 	}
 
@@ -64,15 +61,43 @@ unordered_map <char, int> countLetters (string inputString) {
 /*
 	Changes a list of input strings into a list of dicts of (char, int) 
 */
-vector <unordered_map <char, int>> listOfLetterCounts (vector<string> listOfStrings) {
+vector <unordered_map <char, int>> listOfLetterCounts (vector <string> listOfStrings) {
 	
 	vector <unordered_map <char, int>> letterCounts;
 
 	for (string str: listOfStrings) {
-		letterCounts.push_back(countLetters(str));
+		letterCounts.push_back (countLetters (str));
 	}
 
 	return letterCounts;
+}
+
+
+/* 
+	If a key had appeared count times, return true.
+*/ 
+bool countAppears (unordered_map <char, int> dict, int count) {
+
+	for (pair <char, int> p: dict) {
+		if (p.second == count) {
+			return true;
+		}
+	}
+
+	return false;
+
+}
+
+int checksum (vector <unordered_map <char, int>> letterCounts) {
+	
+	int doubles = 0, triples = 0;
+
+	for (auto letterCount: letterCounts) {
+		if (countAppears (letterCount, 2)) doubles++ ;
+		if (countAppears (letterCount, 3)) triples++ ;
+	}
+	
+	return doubles * triples;
 }
 
 
@@ -81,18 +106,11 @@ vector <unordered_map <char, int>> listOfLetterCounts (vector<string> listOfStri
 */
 int main () {
 
-	vector<string> stringInputs = getInput ("input.txt");
-	vector<unordered_map <char, int>> letterCounts = listOfLetterCounts (stringInputs); 
+	vector <string> stringInputs = getInput ("input.txt");
+	vector <unordered_map <char, int>> letterCounts = listOfLetterCounts (stringInputs); 
+	int csum = checksum (letterCounts);
+	cout << "Checksum: " << csum << endl;
 
-
-	// unordered_map <char, int> dicts = 
-
-	
-
-	// Check string reading worked 
-	// for (auto strPtr = stringInputs.begin(); strPtr != stringInputs.end(); strPtr++) {
-		// cout << *strPtr << endl ; 
-	// }
 
 	return 0;
 }
